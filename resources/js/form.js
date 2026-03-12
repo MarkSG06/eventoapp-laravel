@@ -82,7 +82,7 @@ export default (() => {
        DELETE (abrir modal)
     ========================== */
 
-    if (event.target.closest('.delete-icon')) {
+    if (event.target.closest('.create-button')) {
 
       const form = formSection.querySelector('form');
       const id = form?.querySelector('[name="id"]')?.value;
