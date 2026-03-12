@@ -2,7 +2,11 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import url('./navbar.css');
 @import url('./table.css');
 @import url('./form.css');
+@import url('./tooltip.css');
 @import url('./admin.css');
+@import url('./filter.css');
 @import url('./menu.css');
+@import url('./modal-destroy.css');

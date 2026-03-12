@@ -50,13 +50,17 @@ class OpenAIService
                             return $decoded;
                         }
                     }
+                    
                 }
+                
             }
+            
 
             throw new \Exception('OpenAI returned no usable JSON output');
 
         } catch (\Throwable $e) {
             throw new \Exception('OpenAI error: ' . $e->getMessage());
         }
+        
     }
 }

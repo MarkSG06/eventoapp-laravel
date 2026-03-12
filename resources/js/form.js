@@ -1,166 +1,127 @@
+import store from './redux/store';
+import { setForm, setTable } from './redux/crud-slice';
+
 export default (() => {
 
-  const formSection = document.querySelector('.form');
-  if (!formSection) return;
+  const formSection = document.querySelector('.crud-form');
+  let form = null
 
-  const baseEndpoint = '/admin/usuarios';
-  let currentDeleteEndpoint = null;
+  function updateDestroyButton() {
+    const destroyButton = document.querySelector('.destroy-button');
+    const idInput = document.querySelector('input[name="id"]');
 
-  document.addEventListener("refreshForm", event => {
-    if (!event.detail?.form) return;
-    formSection.innerHTML = event.detail.form;
-  });
+    const id = idInput?.value || "";
 
-  formSection.addEventListener('click', async (event) => {
-    /* =========================
-       SAVE (POST / PUT)
-    ========================== */
+    if (id && id !== "0") {
+      destroyButton.classList.remove('hidden');
+    } else {
+      destroyButton.classList.add('hidden');
+    }
+  }
+  
+  store.subscribe(() => {
+    const currentState = store.getState()
 
-    if (event.target.closest('.save-button')) {
+    if (currentState.crud.form !== form) {
+      formSection.innerHTML = currentState.crud.form
+      form = currentState.crud.form
 
-      const form = formSection.querySelector('form');
-      if (!form) return;
+      updateDestroyButton()
+    }
+  })
 
+  formSection?.addEventListener('click', async (event) => {
+
+    if (event.target.closest('.store-button')) {
+
+      const storeButton = event.target.closest('.store-button')
+      const endpoint = storeButton.dataset.endpoint;
+      const form = document.querySelector('.admin-form');
       const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
 
-      let endpoint = baseEndpoint;
-      let method = 'POST';
-
-      if (data.id) {
-        endpoint = `${baseEndpoint}/${data.id}`;
-        method = 'PUT';
-      }
-
-      try {
-
+      try{
         const response = await fetch(endpoint, {
-          method: method,
           headers: {
-            'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
           },
-          body: JSON.stringify(data)
-        });
-
-        if (response.status === 422) {
+          method: 'POST',
+          body: formData
+        })
+  
+        if (response.status === 500 || response.status === 422) {
+          throw response
+        }
+  
+        if (response.status === 200) {  
           const json = await response.json();
-          console.log(json.errors);
-          return;
+          store.dispatch(setTable(json.table))
+          store.dispatch(setForm({form: json.form, formElementEndpoint: null}))
         }
 
-        if (!response.ok) throw response;
+      }catch(error){
 
-        const json = await response.json();
+        if (error.status === 422) {
 
-        document.dispatchEvent(new CustomEvent('refreshTable', {
-          detail: { table: json.table }
-        }));
+          const json = await error.json();
 
-        document.dispatchEvent(new CustomEvent('notification', {
-          detail: {
-            message: 'Guardado correctamente',
-            type: 'success'
-          }
-        }));
+          document.dispatchEvent(new CustomEvent('showformValidations', {
+            detail: {
+              formValidation: form.previousElementSibling,
+              errors: json.errors
+            }
+          }))
+        }
 
-        form.reset();
+        if (error.status === 500) {
 
-      } catch (error) {
+          const json = await error.json();
 
-        document.dispatchEvent(new CustomEvent('notification', {
-          detail: {
-            message: 'Error al guardar',
-            type: 'error'
-          }
-        }));
+          document.dispatchEvent(new CustomEvent('notification', {
+            detail: {
+              message: json.message,
+              type: 'error'
+            }
+          }))
+        }
       }
     }
-
-    /* =========================
-       DELETE (abrir modal)
-    ========================== */
 
     if (event.target.closest('.create-button')) {
 
-      const form = formSection.querySelector('form');
-      const id = form?.querySelector('[name="id"]')?.value;
-
-      if (!id) {
-        document.dispatchEvent(new CustomEvent('notification', {
-          detail: {
-            message: 'Selecciona un usuario primero',
-            type: 'error'
-          }
-        }));
-        return;
-      }
-
-      currentDeleteEndpoint = `${baseEndpoint}/${id}`;
-      document.querySelector('.deleteModal').style.display = 'flex';
-    }
-
-    /* =========================
-       CONFIRM DELETE
-    ========================== */
-
-    if (event.target.closest('.deleteModal-button-confirm')) {
-
-      if (!currentDeleteEndpoint) return;
+      const createButton = event.target.closest('.create-button')
+      const endpoint = createButton.dataset.endpoint;
 
       try {
-
-        const response = await fetch(currentDeleteEndpoint, {
-          method: 'DELETE',
+        const response = await fetch(endpoint, {
           headers: {
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-          }
-        });
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          method: 'GET',
+        })
 
-        if (!response.ok) throw response;
+        if (response.status === 500 || response.status === 422) {
+          throw response
+        }
 
-        document.dispatchEvent(new CustomEvent('refreshTable'));
-
-        document.dispatchEvent(new CustomEvent('notification', {
-          detail: {
-            message: 'Usuario eliminado correctamente',
-            type: 'success'
-          }
-        }));
-
-        const form = formSection.querySelector('form');
-        form?.reset();
-
-        document.querySelector('.deleteModal').style.display = 'none';
-        currentDeleteEndpoint = null;
+        if (response.status === 200) {
+          const json = await response.json();
+          store.dispatch(setForm({form: json.form, formElementEndpoint: endpoint}))
+        }
 
       } catch (error) {
-
-        document.dispatchEvent(new CustomEvent('notification', {
-          detail: {
-            message: 'No se pudo eliminar el usuario',
-            type: 'error'
-          }
-        }));
+        console.error(error)
       }
     }
 
-    /* =========================
-       CANCEL DELETE
-    ========================== */
+    if (event.target.closest('.destroy-button')) {
 
-    if (event.target.closest('.deleteModal-button-cancel')) {
-      document.querySelector('.deleteModal').style.display = 'none';
-      currentDeleteEndpoint = null;
+      const modalDelete = document.querySelector('.modal-destroy');
+      modalDelete.classList.add('active');    
+      
     }
 
-    /* =========================
-       CLEAN FORM
-    ========================== */
-    if (event.target.closest('.clean-button')) {
-      formSection.querySelector('form').reset();
-    }
+
   });
+
 })();

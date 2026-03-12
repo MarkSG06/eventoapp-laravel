@@ -1,0 +1,39 @@
+.tooltip{
+  background-color: #000;
+  box-shadow: 5px 10px 19px -7px rgba(0,0,0,0.75);
+  color: hsl(0, 0%, 100%);
+  font-size: 0.8rem;
+  opacity: 0;
+  padding: 0.5rem 1rem;
+  pointer-events: none; 
+  position: absolute;
+  text-align: center;
+  top: 3rem; 
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s;
+  width: 120px;
+  z-index: 100;
+}
+
+.tooltip::after {
+  content: "";
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  top: -60%;   
+}
+
+.toolbar .tooltip{
+  right: 2rem;
+  left: auto;
+}
+
+button{
+  position: relative;
+}
+
+button:hover > .tooltip{
+  opacity: 1;
+  visibility: visible;
+}

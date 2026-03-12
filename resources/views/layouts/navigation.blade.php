@@ -1,26 +1,133 @@
+@php
+$navLinks = [
+['route' => 'dashboard', 'label' => 'Dashboard'],
+['route' => 'users', 'label' => 'Usuarios'],
+['route' => 'customers', 'label' => 'Clientes'],
+['route' => 'tickets', 'label' => 'Tickets'],
+];
+@endphp
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex gap-4">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('admin') }}">
+                    <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
+                <style>
+                    #menu__toggle {
+                        opacity: 0;
+                    }
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
-                        {{ __('Admin') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
-                        {{ __('Usuarios') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('tickets')" :active="request()->routeIs('tickets')">
-                        {{ __('Tickets') }}
-                    </x-nav-link>
+                    #menu__toggle:checked~.menu__btn>span {
+                        transform: rotate(45deg);
+                    }
+
+                    #menu__toggle:checked~.menu__btn>span::before {
+                        top: 0;
+                        transform: rotate(0);
+                    }
+
+                    #menu__toggle:checked~.menu__btn>span::after {
+                        top: 0;
+                        transform: rotate(90deg);
+                    }
+
+                    #menu__toggle:checked~.menu__box {
+                        visibility: visible;
+                        left: 0;
+                    }
+
+                    .menu__btn {
+                        display: flex;
+                        align-items: center;
+                        position: fixed;
+                        width: 26px;
+                        height: 26px;
+                        cursor: pointer;
+                        z-index: 1000;
+                    }
+
+                    .menu__btn>span,
+                    .menu__btn>span::before,
+                    .menu__btn>span::after {
+                        display: block;
+                        position: absolute;
+
+                        width: 100%;
+                        height: 2px;
+
+                        background-color: #616161;
+
+                        transition-duration: .25s;
+                    }
+
+                    .menu__btn>span::before {
+                        content: '';
+                        top: -8px;
+                    }
+
+                    .menu__btn>span::after {
+                        content: '';
+                        top: 8px;
+                    }
+
+                    .menu__box {
+                        display: block;
+                        position: fixed;
+                        visibility: hidden;
+                        top: 0;
+                        left: -100%;
+                        width: 300px;
+                        height: 100%;
+                        margin: 0;
+                        padding: 80px 0;
+                        list-style: none;
+                        background-color: #fff;
+                        box-shadow: 1px 0px 6px rgba(0, 0, 0, .2);
+                        transition-duration: .25s;
+                        z-index: 999;
+                    }
+
+                    .menu__item {
+                        display: block;
+                        padding: 12px 24px;
+
+                        color: #333;
+
+                        font-family: 'Roboto', sans-serif;
+                        font-size: 20px;
+                        font-weight: 600;
+
+                        text-decoration: none;
+
+                        transition-duration: .25s;
+                    }
+
+                    .menu__item:hover {
+                        background-color: #CFD8DC;
+                    }
+                </style>
+                {{-- Hamburguer --}}
+                <div class="hamburger-menu">
+                    <input id="menu__toggle" type="checkbox" />
+                    <label class="menu__btn" for="menu__toggle">
+                        <span></span>
+                    </label>
+
+                    <ul class="menu__box">
+                        <div class="pt-2 pb-3 space-y-1">
+                            @foreach ($navLinks as $link)
+                            <x-responsive-nav-link :href="route($link['route'])"
+                                :active="request()->routeIs($link['route'])">
+                                {{ __($link['label']) }}
+                            </x-responsive-nav-link>
+                            @endforeach
+                        </div>
+                    </ul>
                 </div>
             </div>
 
@@ -80,9 +187,11 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
-                {{ __('Admin') }}
+            @foreach ($navLinks as $link)
+            <x-responsive-nav-link :href="route($link['route'])" :active="request()->routeIs($link['route'])">
+                {{ __($link['label']) }}
             </x-responsive-nav-link>
+            @endforeach
         </div>
 
         <!-- Responsive Settings Options -->

@@ -9,7 +9,7 @@
 
   <title>Admin</title>
 
-  @vite(['resources/css/index.css', 'resources/js/admin.js', 'resources/js/app.js'])
+  @vite(['resources/css/index.css', 'resources/js/admin.js'])
 </head>
 
 <body>
@@ -20,6 +20,8 @@
   <main>
     {{ $slot }}
   </main>
+  <x-notification />
+  <x-modal-destroy />
 </body>
 
 </html>

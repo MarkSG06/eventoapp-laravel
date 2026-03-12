@@ -1,52 +1,63 @@
+import store from './redux/store';
+import { setTable, setForm } from './redux/crud-slice';
+
 export default (() => {
 
-  const tableSection = document.querySelector('.table');
-  if (!tableSection) return;
+  const tableSection = document.querySelector('.crud-table')
+  let table = null
 
-  const baseEndpoint = '/admin/usuarios';
+  store.subscribe(() => {
+    const currentState = store.getState()
 
-  document.addEventListener("refreshTable", event => {
-    if (!event.detail?.table) return;
-    tableSection.innerHTML = event.detail.table;
-  });
+    if (currentState.crud.table !== table) {
+        tableSection.innerHTML = currentState.crud.table
+        table = currentState.crud.table
+    }
+  })
+  
+  tableSection?.addEventListener('click', async (event) => {
 
-  tableSection.addEventListener('click', async (event) => {
-
-    const box = event.target.closest('.table-box__data');
-    if (box) {
-
-      const id = box.dataset.id;
-      if (!id) return;
-
-      const endpoint = `${baseEndpoint}/${id}/edit`;
+    if (event.target.closest('.table__body')) {
+      const editButton = event.target.closest('.table-box__data');
+      const endpoint = editButton.dataset.endpoint;
 
       try {
-        const response = await fetch(endpoint, {
-          headers: { 'X-Requested-With': 'XMLHttpRequest' },
-          method: 'GET',
-        });
-
-        if (!response.ok) throw response;
-
-        const json = await response.json();
-
-        document.dispatchEvent(new CustomEvent('refreshForm', {
-          detail: { form: json.form }
-        }));
-
-      } catch (error) {
-
-        document.dispatchEvent(new CustomEvent('notification', {
-          detail: {
-            message: 'Error al cargar usuario',
-            type: 'error'
-          }
-        }));
+          const response = await fetch(endpoint);
+          const json = await response.json();
+          store.dispatch(setForm({form: json.form, formElementEndpoint: endpoint}));
+      } catch (error) { 
+          console.log('Error en fetch:', error);
       }
+    }
 
-      return;
+    if (event.target.closest('.table__header-icon')) {
+      const filter = document.querySelector(".filter");
+      filter.classList.add("active");
+    }
+
+    if (event.target.closest('.filter-cancel')) {
+      const filter = document.querySelector(".filter");
+      filter.classList.remove('active');
+    }
+
+    if(event.target.closest('.filter-confirm')) {
+      const endpoint = event.target.closest('.filter-confirm').dataset.endpoint
+      const form = document.querySelector('form.table-filter')
+      const formData = new FormData(form)
+
+      const queryString = new URLSearchParams(formData).toString()
+      const url = endpoint + '?' + queryString
+
+      const response = await fetch(url, {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        method: 'GET',
+      })
+
+      const json = await response.json()
+      store.dispatch(setTable(json.table))
     }
 
   });
-
 })();

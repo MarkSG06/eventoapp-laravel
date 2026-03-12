@@ -1,0 +1,10 @@
+import './bootstrap';
+import './table';
+import './table-pagination';
+import './form';
+import './form-validation';
+import './tabs';
+import './modal-destroy';
+import './notification';
+import './dropdown';
+import './app'

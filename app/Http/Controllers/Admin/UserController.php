@@ -2,91 +2,159 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\MySQL\User;
+use App\ViewModels\Admin\UserViewModel as ViewModel;
 use App\Http\Requests\Admin\UserRequest;
 
 class UserController extends Controller
 {
-    public function __construct(private User $user) {}
+  
+  public function __construct(private User $user){}
+  
+  public function index()
+  {
+    try{
+      $filters = [
+        'name' => 'like',
+        'email' => 'like'
+      ];
 
-    public function index()
-    {
-        $records = $this->user->orderBy('created_at', 'desc')->paginate(10);
+      $query = $this->user;
 
-        return view('admin.users.index', compact('records'));
-    }
+      foreach ($filters as $field => $type) {
+        $value = request($field);
 
-    public function create()
-    {
-        if (request()->ajax()) {
-            return response()->json([
-                'form' => view('forms.users', [
-                    'user' => new User()
-                ])->render()
-            ]);
-        }
-    }
-
-    public function store(UserRequest $request)
-    {
-        $data = $request->validated();
-        unset($data['password_confirmation']);
-
-        $this->user->create($data);
-
-        return response()->json([
-            'message' => 'Usuario creado correctamente',
-            'table' => $this->renderTable(),
-            'form'  => $this->renderForm(new User())
-        ]);
-    }
-
-    public function edit(User $user)
-    {
-        return response()->json([
-            'form' => $this->renderForm($user)
-        ]);
-    }
-
-    public function update(UserRequest $request, User $user)
-    {
-        $data = $request->validated();
-        unset($data['password_confirmation']);
-
-        if (!$request->filled('password')) {
-            unset($data['password']);
+        if ($value === null || $value === '') {
+          continue;
         }
 
-        $user->update($data);
+        match ($type) {
+          'like' => $query->where($field, 'like', '%' . $value . '%'),
+          '='    => $query->where($field, $value),
+          default => null,
+        };
+      }
 
+      $users = $query
+        ->orderBy('created_at', 'desc')
+        ->paginate(10)
+        ->withQueryString();
+      
+      if(request()->ajax()) {
+            
         return response()->json([
-            'message' => 'Usuario actualizado correctamente',
-            'table' => $this->renderTable(),
-            'form'  => $this->renderForm($user)
-        ]);
+          'table' => view('components.tables', ['tableStructure' => ViewModel::tableStructure(), 'records' => $users])->render(),
+          'form' => view('components.forms', ['formStructure' => ViewModel::formStructure(), 'record' => $this->user])->render()
+        ], 200); 
+
+      }else{
+
+        $view = View::make('admin.users.index')
+        ->with('tableStructure', ViewModel::tableStructure())
+        ->with('formStructure', ViewModel::formStructure())
+        ->with('records', $users)
+        ->with('record', $this->user);
+
+        return $view;
+      }
+    }catch(\Exception $e){
+      return response()->json([
+        'message' =>  $e->getMessage(),  
+      ], 500);
     }
+  }
 
-    public function destroy(User $user)
-    {
-        $user->delete();
-
+  public function create()
+  {
+    try {
+      if (request()->ajax()) {
         return response()->json([
-            'message' => 'Usuario eliminado correctamente',
-            'table' => $this->renderTable(),
-            'form'  => $this->renderForm(new User())
-        ]);
+          'form' => view('components.forms', ['formStructure' => $this->user->formStructure(), 'record' => $this->user])->render(),
+        ], 200);
+      }
+    } catch (\Exception $e) {
+      return response()->json([
+          'message' =>  'hola',
+      ], 500);
     }
+  }
 
-    private function renderTable()
-    {
-        $records = $this->user->orderBy('created_at', 'desc')->paginate(10);
+  public function store(UserRequest $request)
+  {            
+    try{
 
-        return view('components.tables.users', compact('records'))->render();
+      $data = $request->validated();
+
+      unset($data['password_confirmation']);
+      
+      if (!$request->filled('password') && $request->filled('id')){
+        unset($data['password']);
+      }
+  
+      $this->user->updateOrCreate([
+        'id' => $request->input('id')
+      ], $data);
+
+      $users = $this->user
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      if ($request->filled('id')){
+        $message = \Lang::get('admin/notification.update');
+      }else{
+        $message = \Lang::get('admin/notification.create');
+      }
+      
+      return response()->json([
+        'table' => view('components.tables', ['tableStructure' => $this->user->tableStructure(), 'records' => $users])->render(),
+        'form' => view('components.forms', ['formStructure' => $this->user->formStructure(), 'record' => $this->user])->render(),
+        'message' => $message,
+      ], 200);
     }
-
-    private function renderForm($user)
-    {
-        return view('components.forms.users', compact('user'))->render();
+    catch(\Exception $e){
+      return response()->json([
+        'message' => $e->getMessage(),
+      ], 500);
     }
+  }
+
+  public function show(User $user)
+  {
+    try{
+      return response()->json([
+        'form' => view('components.forms', ['formStructure' => $this->user->formStructure(), 'record' => $user])->render(),
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => 'hola',
+      ], 500);
+    }
+  }
+
+  public function destroy(User $user)
+  {
+    try{
+      $user->delete();
+
+      $users = $this->user
+      ->orderBy('created_at', 'desc')
+      ->paginate(10);
+
+      $message = \Lang::get('admin/notification.destroy');
+      
+      return response()->json([
+        'table' => view('components.tables', ['tableStructure' => $this->user->tableStructure(), 'records' => $users])->render(),
+        'form' => view('components.forms', ['formStructure' => $this->user->formStructure(), 'record' => $this->user])->render(),
+        'message' => $message,
+      ], 200);
+    }
+    catch(\Exception $e){
+      return response()->json([
+        'message' => 'hola',
+      ], 500);
+    }
+  }
 }

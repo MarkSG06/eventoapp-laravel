@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\Controller;
-use App\Models\TicketDetail;
+use App\Models\MySQL\TicketDetail;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\TicketDetailRequest;
 

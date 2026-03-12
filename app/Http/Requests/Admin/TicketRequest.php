@@ -20,28 +20,28 @@ class TicketRequest extends FormRequest
     public function rules()
     {
       return [
-        'fiscal_name' => 'required|min:3|max:64',
-        'nif' => 'required|min:3|max:64',
-        'tax_amount' => 'required|min:3|max:64',
-        'total_before_tax' => 'required|min:3|max:64',
-        'total_tax' => 'required|min:3|max:64',
-        'total_after_tax' => 'required|min:3|max:64',
-        'datetime' => 'required|min:3|max:64',
-        'ticket_number' => 'required|min:3|max:64',
+        // 'fiscal_name' => '|min:3|max:64',
+        // 'nif' => '|min:3|max:64',
+        // 'tax_amount' => '|min:3|max:64',
+        // 'total_before_tax' => '|min:3|max:64',
+        // 'total_tax' => '|min:3|max:64',
+        // 'total_after_tax' => '|min:3|max:64',
+        // 'datetime' => '|min:3|max:64',
+        // 'ticket_number' => '|min:3|max:64',
       ];
     }
 
     public function messages()
     {
       return [
-        'fiscal_name.required' => 'El nombre es obligatorio',
-        'nif.required' => 'El nif es obligatorio',
-        'tax_amount.required' => 'El tax amount es obligatorio',
-        'total_before_tax.required' => 'El total before tax es obligatorio',
-        'total_tax.required' => 'El total tax es obligatorio',
-        'total_after_tax.required' => 'El total after tax es obligatorio',
-        'datetime.required' => 'El datetime es obligatorio',
-        'ticket_number.required' => 'El ticket number es obligatorio',
+        // 'fiscal_name' => 'El nombre es obligatorio',
+        // 'nif' => 'El nif es obligatorio',
+        // 'tax_amount' => 'El tax amount es obligatorio',
+        // 'total_before_tax' => 'El total before tax es obligatorio',
+        // 'total_tax' => 'El total tax es obligatorio',
+        // 'total_after_tax' => 'El total after tax es obligatorio',
+        // 'datetime' => 'El datetime es obligatorio',
+        // 'ticket_number' => 'El ticket number es obligatorio',
       ];
     }
 }

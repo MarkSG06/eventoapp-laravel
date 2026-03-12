@@ -127,8 +127,8 @@ botonFoto.addEventListener('click', async () =>
 
     /* ===== Cargar JSON OCR ===== */
 
-    const pretty = JSON.stringify(responseBody.data, null, 2);
-    editor.setValue(pretty);
+    const jsonText = JSON.stringify(responseBody?.data ?? {}, null, 2);
+    editor.setValue(jsonText);
 
     /* ===== Formatear ===== */
 
@@ -149,20 +149,47 @@ botonFoto.addEventListener('click', async () =>
 /* =========================
    BOTÓN GUARDAR
 ========================= */
-
-document.getElementById('guardar')?.addEventListener('click', () =>
+document.getElementById('guardar')?.addEventListener('click', async () =>
 {
 
   if (!editor) return;
 
-  try {
-    const parsed = JSON.parse(editor.getValue());
-    console.log('JSON válido:', parsed);
-    ticketJson.classList.add('active');
+  let parsed;
 
+  // validar JSON
+  try {
+    parsed = JSON.parse(editor.getValue());
   }
   catch {
-    alert('JSON inválido ❌');
+    return;
+  }
+
+  // guardar en servidor
+  try {
+
+    const response = await fetch('/admin/tickets', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document
+          .querySelector('meta[name="csrf-token"]')
+          ?.getAttribute('content')
+      },
+      body: JSON.stringify({ data: parsed })
+    });
+
+    const text = await response.text();
+
+    const responseBody = JSON.parse(text);
+
+    if (!response.ok || !responseBody.success) {
+      throw new Error(responseBody.message || 'Error guardando ticket');
+    }
+
+
+  }
+  catch (error) {
+    console.error(error);
   }
 
 });

@@ -1,0 +1,160 @@
+@props([
+'inputs' => [],
+'record' => null,
+])
+<div class="sectionMain">
+  <form class="admin-form">
+
+    <input type="hidden" name="id" value="{{$record?->id}}">
+
+    @foreach ($inputs as $section => $content)
+    <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $section }}">
+      @foreach ($content as $localization => $formElements)
+      @if ($localization == 'noLocale')
+      @foreach ($formElements as $formElement)
+      @switch($formElement['type'])
+      @case('textarea')
+
+      <x-form.textarea form="form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :inputAttributes="$formElement['attributes'] ?? ''" />
+      @break
+
+      @case('image')
+
+      <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :value="$record?->{$formElement['name']}"
+        :inputAttributes="$formElement['attributes'] ?? ''" />
+      @break
+
+      @case('file')
+
+      <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :value="$record?->{$formElement['name']}"
+        :inputAttributes="$formElement['attributes'] ?? ''" />
+      @break
+
+      @case('select')
+
+      <x-form.select form="form" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+        :inputAttributes="$formElement['attributes'] ?? ''" />
+      @break
+
+      @case('checkbox')
+
+      <x-form.checkbox form="form" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+        :inputAttributes="$formElement['attributes'] ?? ''" />
+      @break
+
+      @case('radio')
+
+      <x-form.radio form="form" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+        :inputAttributes="$formElement['attributes'] ?? ''" />
+      @break
+
+      @case('range')
+
+      <x-form.range form="form" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :type="$formElement['type']"
+        :inputAttributes="$formElement['attributes'] ?? []" />
+      @break
+
+      @default
+
+      <x-form.input form="form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
+        :label="$formElement['label']" :type="$formElement['type']"
+        :inputAttributes="$formElement['attributes'] ?? []" />
+      @break
+
+      @endswitch
+      @endforeach
+      @endif
+
+      @if($localization == 'locale' && $formElements)
+
+      <section class="locale-inputs">
+
+        <div class="locale-bar">
+          <x-tabs :tabs="$languages" />
+        </div>
+
+        @foreach($languages as $language)
+
+        <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $language['name'] }}">
+
+          <div class="form-elements">
+
+            @foreach ($formElements as $formElement)
+
+            @switch($formElement['type'])
+
+            @case('textarea')
+
+            <x-form.textarea form="form" :record="$record" :locale="$language['label']" :name="$formElement['name']"
+              :width="$formElement['width']" :label="$formElement['label']"
+              :inputAttributes="$formElement['attributes'] ?? ''" />
+            @break
+
+            @case('image')
+
+            <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
+              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
+              :inputAttributes="$formElement['attributes'] ?? ''" />
+            @break
+
+            @case('file')
+
+            <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
+              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
+              :inputAttributes="$formElement['attributes'] ?? ''" />
+            @break
+
+            @case('select')
+
+            <x-form.select form="form" :name="$formElement['name']" :width="$formElement['width']"
+              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
+              :options="$formElement['options']" :inputAttributes="$formElement['attributes'] ?? ''" />
+            @break
+
+            @case('checkbox')
+
+            <x-form.checkbox form="form" :name="$formElement['name']" :width="$formElement['width']"
+              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
+              :options="$formElement['options']" :inputAttributes="$formElement['attributes'] ?? ''" />
+            @break
+
+            @case('radio')
+
+            <x-form.radio form="form" :name="$formElement['name']" :width="$formElement['width']"
+              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
+              :options="$formElement['options']" :inputAttributes="$formElement['attributes'] ?? ''" />
+            @break
+
+            @case('range')
+
+            <x-form.range form="form" :name="$formElement['name']" :width="$formElement['width']"
+              :label="$formElement['label']" :value="$record?->{$formElement['name']}" :type="$formElement['type']"
+              :inputAttributes="$formElement['attributes'] ?? []" />
+            @break
+
+            @default
+
+            <x-form.input form="form" :record="$record" :locale="$language['label']" :name="$formElement['name']"
+              :width="$formElement['width']" :label="$formElement['label']" :type="$formElement['type']"
+              :inputAttributes="$formElement['attributes'] ?? []" />
+            @break
+
+            @endswitch
+            @endforeach
+          </div>
+        </div>
+        @endforeach
+      </section>
+      @endif
+      @endforeach
+    </div>
+    @endforeach
+  </form>
+</div>

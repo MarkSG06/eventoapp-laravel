@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('total_before_tax');
             $table->decimal('total_tax');
             $table->decimal('total_after_tax');
-            $table->dateTime('datetime');
+            $table->date('datetime');
             $table->string('ticket_number');
             $table->timestamps();
         });
