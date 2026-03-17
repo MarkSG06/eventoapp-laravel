@@ -37,22 +37,25 @@ final class TicketViewModel
             ],
             'inputs' => [
                 'general' => [
-                'noLocale' => [
-                    ['name' => 'fiscal_name', 'type' => 'text', 'label' => 'Nombre Fiscal', 'width' => 'half-width'],
-                    ['name' => 'nif', 'type' => 'text', 'label' => 'NIF', 'width' => 'half-width'],
-                    ['name' => 'datetime', 'type' => 'datetime-local', 'label' => 'Fecha', 'width' => 'half-width'],
-                    ['name' => 'ticket_number', 'type' => 'number', 'label' => 'Número de ticket', 'width' => 'half-width'],
-                    ['name' => 'tax_amount', 'type' => 'number', 'label' => 'Importe de impuestos', 'width' => 'one-quarter-width'],
-                    ['name' => 'total_before_tax', 'type' => 'number', 'label' => 'Total antes de impuestos', 'width' => 'one-quarter-width'],
-                    ['name' => 'total_tax', 'type' => 'number', 'label' => 'Total de impuestos', 'width' => 'one-quarter-width'],
-                    ['name' => 'total_after_tax', 'type' => 'number', 'label' => 'Total después de impuestos', 'width' => 'one-quarter-width'],
-
-                ]
+										'noLocale' => [
+											['name' => 'fiscal_name', 'type' => 'text', 'label' => 'Nombre Fiscal', 'width' => 'half-width'],
+											['name' => 'nif', 'type' => 'text', 'label' => 'NIF', 'width' => 'half-width'],
+											['name' => 'datetime', 'type' => 'datetime-local', 'label' => 'Fecha', 'width' => 'half-width'],
+											['name' => 'ticket_number', 'type' => 'number', 'label' => 'Número de ticket', 'width' => 'half-width'],
+											['name' => 'tax_amount', 'type' => 'number', 'label' => 'Importe de impuestos', 'width' => 'one-quarter-width'],
+											['name' => 'total_before_tax', 'type' => 'number', 'label' => 'Total antes de impuestos', 'width' => 'one-quarter-width'],
+											['name' => 'total_tax', 'type' => 'number', 'label' => 'Total de impuestos', 'width' => 'one-quarter-width'],
+											['name' => 'total_after_tax', 'type' => 'number', 'label' => 'Total después de impuestos', 'width' => 'one-quarter-width'],
+										],
+										'locale' => [
+											['name' => 'title', 'type' => 'text', 'label' => 'Título', 'width' => 'full-width'],
+											['name' => 'notes', 'type' => 'textarea', 'label' => 'Notas', 'width' => 'full-width'],
+										],
                 ],
                 'images' => [
-                'noLocale' => [
-                    ['name' => 'image', 'type' => 'file', 'label' => 'Imagen', 'width' => 'full-width'],
-                ]
+										'noLocale' => [
+											['name' => 'image', 'type' => 'gallery', 'buttonText' => 'Subir', 'label' => '', 'width' => 'minimum-width'],
+										]
                 ],
             ]
         ];

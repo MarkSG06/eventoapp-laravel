@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-// use App\Models\User;
-// use App\Models\Customer;
-// use App\Models\Ticket;
-use App\Models\MySQL\Language;
+use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,13 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Language::factory(10)->create();
 
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@a.a',
+            'password' => 'password'
+        ]);
 
-        // User::factory()->create([
-        //     'name' => 'Mark',
-        //     'email' => 'a@a.a',
-        //     'password' => 'password'
-        // ]);
+				Customer::factory()->create([
+            'name' => 'Customer',
+            'email' => 'customer@a.a',
+            'password' => 'password'
+        ]);
     }
 }

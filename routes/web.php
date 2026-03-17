@@ -11,12 +11,12 @@ use App\Services\OpenAIService;
 // HOME
 // -------------------------------
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('front.welcome');
+})->name('welcome');
 
 Route::get('/camera', function () {
-    return view('camera');
-});
+    return view('front.camera');
+})->name('camera');
 
 // -------------------------------
 // ADMIN
@@ -76,6 +76,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
     ]
   ]);
 
+  Route::resource('testings', 'App\Http\Controllers\Admin\TestingController', [
+    'parameters' => [
+      'testings' => 'testing', 
+    ],
+    'names' => [
+      'index' => 'testings',
+      'create' => 'testings_create',
+      'show' => 'testings_edit',
+      'store' => 'testings_store',
+      'destroy' => 'testings_destroy',
+    ]
+  ]);
+
   Route::resource('idiomas', 'App\Http\Controllers\Admin\LanguageController', [
     'parameters' => [
       'idiomas' => 'language', 
@@ -88,6 +101,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
       'destroy' => 'languages_destroy',
     ]
   ]);
+
+  Route::post('/images', 'App\Http\Controllers\Admin\ImageController@store')->name('images_store');
+  Route::get('/images/thumb/{filename}', 'App\Http\Controllers\Admin\ImageController@showThumb')->name('images_thumb');
+  Route::delete('/images/{filename}', 'App\Http\Controllers\Admin\ImageController@destroy')->name('images_destroy');	
   
   Route::get('/camera', function () {
     return view('camera');
@@ -132,6 +149,20 @@ Route::post('/extract-data', function (Request $request, OpenAIService $openai) 
     ]);
 
 });
+
+Route::get('/', function () {})->middleware('setLocale');
+
+Route::post('/change-language', 'App\Http\Controllers\Front\LanguageController@changeLanguage')->name('change-language');
+
+Route::group(['middleware' => 'sitemap'], function () {
+  Route::get('/es', 'App\Http\Controllers\Front\HomeController@index')->name('es.home');
+  Route::get('/en', 'App\Http\Controllers\Front\HomeController@index')->name('en.home');
+	Route::get('/es/tickets', 'App\Http\Controllers\Front\TicketController@index')->name('es.tickets');
+	Route::get('/en/tickets', 'App\Http\Controllers\Front\TicketController@index')->name('en.tickets');
+  Route::get('/es/tickets/{title}', 'App\Http\Controllers\Front\TicketController@show')->name('es.ticket');
+  Route::get('/en/tickets/{title}', 'App\Http\Controllers\Front\TicketController@show')->name('en.ticket');
+});
+
 
 require __DIR__.'/auth-admin.php';
 require __DIR__.'/auth-customer.php';

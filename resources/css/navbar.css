@@ -242,7 +242,7 @@
 
     cursor:pointer;
 
-    position:fixed;
+    position:absolute;
 
     z-index:1000;
 }

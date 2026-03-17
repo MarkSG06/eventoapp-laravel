@@ -1,0 +1,134 @@
+.modal-image.hidden {
+	display: none;
+}
+.modal-image {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.closeModalImage {
+	width: 40px;
+	height: auto;
+	cursor: pointer;
+}
+.closeModalImage:hover {
+	color: hsl(0, 100%, 50%);
+}
+.container {
+	background-color: hsl(0, 0%, 100%);
+	padding: 1rem;
+	border-radius: 0.5rem;
+	width: 100%;
+	height: 80dvh;
+}
+.headerContainer {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	border-bottom: 1px solid hsl(0, 0%, 80%);
+	padding-bottom: 1rem;
+}
+.modal-content {
+	margin-top: 1rem;
+}
+
+.modal-images-container {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 1rem;
+	max-height: 65dvh;
+	overflow-y: auto;
+}
+
+.modal-images-container img {
+	width: 170px;
+	height: 170px;
+	object-fit: cover;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	border-radius: 0.5rem;
+
+}
+
+.modal-images-container img:hover {
+	opacity: 0.4;
+	transition: all 0.3s ease;
+}
+
+.modal-image-create {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.modal-image-create input {
+	width: 100%;
+}
+
+.modal-content {
+	display: grid;
+	grid-template-columns: 80% 20%;
+	gap: 1rem;
+	padding: 1rem;
+}
+
+.headerContainer h1{
+	font-size: 1.5rem;
+	font-weight: 600;
+}
+
+.upload-image {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 170px;
+	height: 170px;
+	border: 2px dashed #ccc;
+	border-radius: 12px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	color: #666;
+}
+
+.upload-image:hover {
+	border-color: #000;
+	color: #000;
+	background: #f5f5f5;
+	
+}
+
+.upload-image svg {
+	pointer-events: none;
+}
+
+.image-item {
+	position: relative;
+}
+
+.delete-button {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0.25rem;
+	background-color: hsl(0, 99%, 30%);
+	color: hsl(0, 0%, 100%);
+	border: none;
+	border-radius: 50%;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.delete-button:hover {
+	background-color: hsl(0, 99%, 50%);
+}

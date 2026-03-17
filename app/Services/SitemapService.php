@@ -2,33 +2,26 @@
 
 namespace App\Services;
 
-use App\Models\Sitemap;
-use Illuminate\Support\Str;
+use App\Models\MySQL\Sitemap;
 
 class SitemapService
 {
-    public function __construct(private Sitemap $sitemap) {}
+  public function __construct(private Sitemap $sitemap) {}
 
-    public function updateOrCreateSlug($entity, $entityId)
-    {
+  public function updateOrCreateSlug($entity, $entityId, $language, $routeName, $slugs)
+  {
+    $this->sitemap->updateOrCreate([
+      'entity' => $entity,
+      'entity_id' => $entityId,
+      'language' => $language
+    ], [
+      'path' => route($language . '.' . $routeName, $slugs),
+      'route_name' => $language . '.' . $routeName
+    ]);
+  }
 
-        $this->sitemap->updateOrCreate([
-            'entity' => $entity,
-            'entity_id' => $entityId,
-        ],
-        [
-            'slug' => Str::slug($slug)
-        ]
-      );
-    }
-
-    public function deleteSlug($entity, $entityId)
-    {
-        $this->sitemap->where('entity', $entity)->where('entity_id', $entityId)->delete();
-    }
-
-    public function getSlug($slug)
-    {
-        return $this->sitemap->where('slug', $slug)->first();
-    }
+  public function deleteSlug($entity, $entityId, $slug)
+  {
+      $this->sitemap->where('entity', $entity)->where('entity_id', $entityId)->where('slug', $slug)->delete();
+  }
 }

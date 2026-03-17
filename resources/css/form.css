@@ -33,14 +33,11 @@
   display: flex;
   height: 100%;
   padding: 0.8rem;
-}
-
-.tab {
   color: hsl(271, 76%, 53%);
   font-weight: 600;
 }
 
-.active-tab {
+.tab.active-tab {
   color: hsl(0, 0%, 100%);
   background-color: hsl(271, 76%, 53%);
   padding: 0.8rem;
@@ -166,10 +163,31 @@ input[type="textarea"] {
   width: 100%;
 }
 textarea {
-  border: none;
-  border-color: #fff;
   max-height: 200px;
   min-height: 100px;
+  width: 100%;
+}
+
+button[type="button"]{
+	cursor: pointer;
+	border: none;
+	background-color: hsl(271, 76%, 53%);
+	color: hsl(0, 0%, 100%);
+	padding: 0.5rem;
+}
+
+.locale-bar{
+  background-color: hsl(0, 0%, 100%);
+  display: flex;
+  width: 100%;
+}
+
+.locale-inputs{
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
 }
 
 .full-width {
@@ -186,6 +204,10 @@ textarea {
 
 .one-quarter-width {
   flex: 0 0 24.25%;
+}
+
+.minimum-width {
+  flex: 0 0 15%;
 }
 
 .destroy-button.hidden {

@@ -11,8 +11,8 @@
 ])
 
 @php
-if ($record) $value = $record[$name . '.' . $locale] ?? $record->{$name} ?? '';
-if ($locale) $name = 'locale[' . $name . '.' . $locale . ']';
+if ($record) $value = $record->locale[$locale][$name] ?? $record->{$name} ?? '';
+if ($locale) $name = 'locale[' . $locale . '][' . $name . ']';
 @endphp
 
 <div class="fieldGroup {{ $width }}">

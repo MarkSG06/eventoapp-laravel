@@ -2,159 +2,144 @@
 'inputs' => [],
 'record' => null,
 ])
-<div class="sectionMain">
-  <form class="admin-form">
 
-    <input type="hidden" name="id" value="{{$record?->id}}">
+<form class="admin-form">
 
-    @foreach ($inputs as $section => $content)
-    <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $section }}">
-      @foreach ($content as $localization => $formElements)
-      @if ($localization == 'noLocale')
-      @foreach ($formElements as $formElement)
-      @switch($formElement['type'])
-      @case('textarea')
+	<input type="hidden" name="id" value="{{$record?->id}}">
 
-      <x-form.textarea form="form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :inputAttributes="$formElement['attributes'] ?? ''" />
-      @break
+	@foreach ($inputs as $section => $content)
+		<div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $section }}">
+			@foreach ($content as $localization => $formElements)
+				@if ($localization == 'noLocale')
+					@foreach ($formElements as $formElement)
+						@switch($formElement['type'])
+							@case('textarea')
 
-      @case('image')
+							<x-form.textarea form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
 
-      <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :value="$record?->{$formElement['name']}"
-        :inputAttributes="$formElement['attributes'] ?? ''" />
-      @break
+							@case('gallery')
 
-      @case('file')
+							<x-form.gallery form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :buttonText="$formElement['buttonText']" :inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
 
-      <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :value="$record?->{$formElement['name']}"
-        :inputAttributes="$formElement['attributes'] ?? ''" />
-      @break
+							@case('image')
 
-      @case('select')
+							<x-form.file form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :value="$record?->{$formElement['name']}"
+								:inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
 
-      <x-form.select form="form" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
-        :inputAttributes="$formElement['attributes'] ?? ''" />
-      @break
+							@case('file')
 
-      @case('checkbox')
+							<x-form.file form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :value="$record?->{$formElement['name']}"
+								:inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
 
-      <x-form.checkbox form="form" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
-        :inputAttributes="$formElement['attributes'] ?? ''" />
-      @break
+							@case('select')
 
-      @case('radio')
+							<x-form.select form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+								:inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
 
-      <x-form.radio form="form" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
-        :inputAttributes="$formElement['attributes'] ?? ''" />
-      @break
+							@case('checkbox')
 
-      @case('range')
+							<x-form.checkbox form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+								:inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
 
-      <x-form.range form="form" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :value="$record?->{$formElement['name']}" :type="$formElement['type']"
-        :inputAttributes="$formElement['attributes'] ?? []" />
-      @break
+							@case('radio')
 
-      @default
+							<x-form.radio form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+								:inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
 
-      <x-form.input form="form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
-        :label="$formElement['label']" :type="$formElement['type']"
-        :inputAttributes="$formElement['attributes'] ?? []" />
-      @break
+							@case('range')
 
-      @endswitch
-      @endforeach
-      @endif
+							<x-form.range form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :value="$record?->{$formElement['name']}" :type="$formElement['type']"
+								:inputAttributes="$formElement['attributes'] ?? []" />
+							@break
 
-      @if($localization == 'locale' && $formElements)
+							@default
 
-      <section class="locale-inputs">
+							<x-form.input form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
+								:label="$formElement['label']" :type="$formElement['type']" :inputAttributes="$formElement['attributes'] ?? []" />
+							@break
+						@endswitch
+					@endforeach
+				@endif
 
-        <div class="locale-bar">
-          <x-tabs :tabs="$languages" />
-        </div>
+				@if($localization == 'locale' && $formElements)
+					<section class="locale-inputs">
 
-        @foreach($languages as $language)
+						<div class="locale-bar" style="text-transform: uppercase;">
+							<x-tabs :tabs="$languages" />
+						</div>
 
-        <div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $language['name'] }}">
+						@foreach($languages as $language)
+							<div class="tab-content {{ $loop->first ? 'active' : '' }}" data-tab="{{ $language['name'] }}">
+								@foreach ($formElements as $formElement)
+									@switch($formElement['type'])
+										@case('textarea')
+											<x-form.textarea form="admin-form" :record="$record" :locale="$language['label']" :name="$formElement['name']"
+												:width="$formElement['width']" :label="$formElement['label']"
+												:inputAttributes="$formElement['attributes'] ?? ''" />
+										@break
 
-          <div class="form-elements">
-
-            @foreach ($formElements as $formElement)
-
-            @switch($formElement['type'])
-
-            @case('textarea')
-
-            <x-form.textarea form="form" :record="$record" :locale="$language['label']" :name="$formElement['name']"
-              :width="$formElement['width']" :label="$formElement['label']"
-              :inputAttributes="$formElement['attributes'] ?? ''" />
-            @break
-
-            @case('image')
-
-            <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
-              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
-              :inputAttributes="$formElement['attributes'] ?? ''" />
-            @break
-
-            @case('file')
-
-            <x-form.file form="form" :name="$formElement['name']" :width="$formElement['width']"
-              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
-              :inputAttributes="$formElement['attributes'] ?? ''" />
-            @break
-
-            @case('select')
-
-            <x-form.select form="form" :name="$formElement['name']" :width="$formElement['width']"
-              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
-              :options="$formElement['options']" :inputAttributes="$formElement['attributes'] ?? ''" />
-            @break
-
-            @case('checkbox')
-
-            <x-form.checkbox form="form" :name="$formElement['name']" :width="$formElement['width']"
-              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
-              :options="$formElement['options']" :inputAttributes="$formElement['attributes'] ?? ''" />
-            @break
-
-            @case('radio')
-
-            <x-form.radio form="form" :name="$formElement['name']" :width="$formElement['width']"
-              :label="$formElement['label']" :value="$record?->{$formElement['name']}"
-              :options="$formElement['options']" :inputAttributes="$formElement['attributes'] ?? ''" />
-            @break
-
-            @case('range')
-
-            <x-form.range form="form" :name="$formElement['name']" :width="$formElement['width']"
-              :label="$formElement['label']" :value="$record?->{$formElement['name']}" :type="$formElement['type']"
-              :inputAttributes="$formElement['attributes'] ?? []" />
-            @break
-
-            @default
-
-            <x-form.input form="form" :record="$record" :locale="$language['label']" :name="$formElement['name']"
-              :width="$formElement['width']" :label="$formElement['label']" :type="$formElement['type']"
-              :inputAttributes="$formElement['attributes'] ?? []" />
-            @break
-
-            @endswitch
-            @endforeach
-          </div>
-        </div>
-        @endforeach
-      </section>
-      @endif
-      @endforeach
-    </div>
-    @endforeach
-  </form>
-</div>
+										@case('gallery')
+											<x-form.gallery form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+												:label="$formElement['label']" :value="$record?->{$formElement['name']}"
+												:inputAttributes="$formElement['attributes'] ?? ''" />
+										@break
+										@case('image')
+											<x-form.file form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+												:label="$formElement['label']" :value="$record?->{$formElement['name']}"
+												:inputAttributes="$formElement['attributes'] ?? ''" />
+										@break
+										@case('file')
+											<x-form.file form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+												:label="$formElement['label']" :value="$record?->{$formElement['name']}"
+												:inputAttributes="$formElement['attributes'] ?? ''" />
+										@break
+										@case('select')
+											<x-form.select form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+												:label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+												:inputAttributes="$formElement['attributes'] ?? ''" />
+										@break
+										@case('checkbox')
+											<x-form.checkbox form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+												:label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+												:inputAttributes="$formElement['attributes'] ?? ''" />
+										@break
+										@case('radio')
+											<x-form.radio form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+												:label="$formElement['label']" :value="$record?->{$formElement['name']}" :options="$formElement['options']"
+												:inputAttributes="$formElement['attributes'] ?? ''" />
+										@break
+										@case('range')
+											<x-form.range form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
+												:label="$formElement['label']" :value="$record?->{$formElement['name']}" :type="$formElement['type']"
+												:inputAttributes="$formElement['attributes'] ?? []" />
+										@break
+										@default
+											<x-form.input form="admin-form" :record="$record" :locale="$language['label']" :name="$formElement['name']"
+											:width="$formElement['width']" :label="$formElement['label']" :type="$formElement['type']"
+											:inputAttributes="$formElement['attributes'] ?? []" />
+										@break
+									@endswitch
+								@endforeach
+							</div>
+						@endforeach
+					</section>
+				@endif
+			@endforeach
+		</div>
+	@endforeach
+</form>

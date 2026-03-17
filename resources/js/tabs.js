@@ -1,6 +1,6 @@
 export default (() => {
 
-  const main = document.querySelector('.tabs');
+  const main = document.querySelector('main');
 
   main?.addEventListener('click', (event) => {
 

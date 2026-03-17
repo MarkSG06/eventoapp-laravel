@@ -40,7 +40,15 @@ final class UserViewModel
                   ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'half-width'],
                   ['name' => 'password', 'type' => 'password', 'label' => 'Contraseña', 'width' => 'half-width'],
                   ['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirmar contraseña', 'width' => 'half-width'],
-              ]
+                  ['name' => 'role', 'type' => 'select', 'label' => 'Rol', 'width' => 'half-width', 'options' => [
+                    ['value' => 'admin', 'label' => 'Admin'],
+                    ['value' => 'user', 'label' => 'User'],
+                  ]],
+                ],
+                'locale' => [
+									['name' => 'title', 'type' => 'text', 'label' => 'Título', 'width' => 'full-width'],
+									['name' => 'description', 'type' => 'textarea', 'label' => 'Descripción', 'width' => 'full-width'],
+                ],
               ],
           ]
       ];

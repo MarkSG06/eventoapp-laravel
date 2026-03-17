@@ -22,11 +22,17 @@ class ViewComposerServiceProvider extends ServiceProvider
       #Admin
 
       view()->composer([
-        'components.form-generator',
+        'components.forms-generator',
         'components.language-selector',
         'components.layouts.admin'
       ],
         'App\Http\ViewComposers\Language'
+      );
+
+      view()->composer([
+        'components.modal-image',
+      ],
+        'App\Http\ViewComposers\Image'
       );
     }
 }

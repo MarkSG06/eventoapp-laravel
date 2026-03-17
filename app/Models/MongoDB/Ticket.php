@@ -14,9 +14,6 @@ class Ticket extends Model
 
     protected $table = 'tickets';
     protected $connection = 'mongodb';
-    protected $primaryKey = '_id';
-    protected $keyType = 'string';
-    public $incrementing = false;
     public $timestamps = true;
 
     public function getRouteKeyName()
@@ -31,14 +28,4 @@ class Ticket extends Model
         'total_after_tax' => 'decimal:2',
         'datetime' => 'datetime',
     ];
-
-    public function details()
-    {
-        return $this->hasMany(TicketDetail::class);
-    }
-
-    public function collections()
-    {
-        return $this->hasMany(TicketCollection::class);
-    }
 }

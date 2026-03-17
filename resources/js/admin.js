@@ -7,4 +7,5 @@ import './tabs';
 import './modal-destroy';
 import './notification';
 import './dropdown';
+import './modal-image';
 import './app'

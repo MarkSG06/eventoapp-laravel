@@ -1,0 +1,44 @@
+.tabs {
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	z-index: 99999;
+}
+
+.tabs select {
+	padding: 8px 35px 8px 12px;
+	font-size: 14px;
+	font-weight: 500;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	background: #fff;
+	color: #333;
+	cursor: pointer;
+	outline: none;
+	transition: all 0.2s ease;
+	text-transform: uppercase;
+}
+
+.tabs select:hover {
+	border-color: #888;
+}
+
+.tabs select:focus {
+	border-color: #4f46e5;
+	box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.tabs select option {
+	padding: 1rem;
+	background: #fff;
+	color: #333;
+}
+
+.tabs select option:hover {
+	background: #f3f4f6;
+}
+
+.tabs select option:checked {
+	background: #4f46e5;
+	color: white;
+}

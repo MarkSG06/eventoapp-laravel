@@ -8,10 +8,11 @@ use App\ViewModels\Admin\TicketViewModel as ViewModel;
 use Illuminate\Http\Request;
 use App\Models\MongoDB\Ticket;
 use App\Http\Requests\Admin\TicketRequest;
+use App\Services\SitemapService;
 
 class TicketController extends Controller
 {
-  public function __construct(private Ticket $ticket)
+  public function __construct(private Ticket $ticket, private SitemapService $sitemapService)
   {
   }
  
@@ -94,8 +95,19 @@ class TicketController extends Controller
       $data['_id'] = $request->input('id');
 
       $ticket = $this->ticket->updateOrCreate([
-        'id' => $request->input('id')
+        '_id' => $request->input('id')
       ], $data);
+
+      \Debugbar::info($ticket->id);	
+
+			foreach ($ticket->locale as $language => $fields) {
+        $slugs = [
+          'title' => $fields['title']
+        ];
+				\Debugbar::info($fields);
+
+        $this->sitemapService->updateOrCreateSlug('tickets', $ticket->_id, $language, 'ticket', $slugs);
+      }
 
       $tickets = $this->ticket
         ->orderBy('created_at', 'desc')

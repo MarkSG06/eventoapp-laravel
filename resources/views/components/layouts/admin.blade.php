@@ -22,6 +22,9 @@
   </main>
   <x-notification />
   <x-modal-destroy />
+  <section class="modal-image hidden">
+    <x-modal-image />
+  </section>
 </body>
 
 </html>

@@ -4,6 +4,7 @@ $navLinks = [
 ['route' => 'users', 'label' => 'Usuarios'],
 ['route' => 'customers', 'label' => 'Clientes'],
 ['route' => 'tickets', 'label' => 'Tickets'],
+['route' => 'languages', 'label' => 'Idiomas'],
 ];
 @endphp
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -44,7 +45,7 @@ $navLinks = [
                     .menu__btn {
                         display: flex;
                         align-items: center;
-                        position: fixed;
+                        position: absolute;
                         width: 26px;
                         height: 26px;
                         cursor: pointer;
