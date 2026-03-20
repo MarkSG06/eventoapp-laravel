@@ -1,10 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import crudReducer from "./crud-slice";
+import { configureStore } from "@reduxjs/toolkit"
+import crudReducer from "./crud-slice"
 
 export const store = configureStore({
     reducer: {
-        crud: crudReducer,
+        crud: crudReducer
     },
-});
+})
 
-export default store;
+export default store

@@ -2,7 +2,7 @@
 'form',
 'name',
 'label',
-'type' => 'text',
+'type' => 'range',
 'width' => 'full-width',
 'value' => '',
 'inputAttributes' => [],
@@ -13,8 +13,7 @@
     <label for="{{ $form }}-{{ $name }}">{{ $label }}</label>
   </div>
   <div class="form-element-range">
-    <input type="{{ $type }}" name="{{ $name }}" id="{{ $form }}-{{ $name }}" value="{{ $value }}" @foreach
-      ($inputAttributes as $key=> $value)
+    <input type="{{ $type }}" name="{{ $name }}" id="{{ $form }}-{{ $name }}" value="{{ $value }}" @foreach($inputAttributes as $key=> $value)
     {{ $key }}="{{ $value }}"
     @endforeach
     >

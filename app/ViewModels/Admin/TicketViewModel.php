@@ -28,7 +28,8 @@ final class TicketViewModel
         return [
             'tabs' => [
                 ['name' => 'general', 'label' => 'General'],
-                ['name' => 'images', 'label' => 'Imágenes']
+                ['name' => 'images', 'label' => 'Imágenes'],
+                // ['name' => 'camera', 'label' => 'Cámara']
             ],
             'formButtons' => [
                 'destroyButton' => 'tickets_destroy',
@@ -36,7 +37,7 @@ final class TicketViewModel
                 'storeButton' => 'tickets_store',
             ],
             'inputs' => [
-                'general' => [
+								'general' => [
 										'noLocale' => [
 											['name' => 'fiscal_name', 'type' => 'text', 'label' => 'Nombre Fiscal', 'width' => 'half-width'],
 											['name' => 'nif', 'type' => 'text', 'label' => 'NIF', 'width' => 'half-width'],
@@ -51,13 +52,65 @@ final class TicketViewModel
 											['name' => 'title', 'type' => 'text', 'label' => 'Título', 'width' => 'full-width'],
 											['name' => 'notes', 'type' => 'textarea', 'label' => 'Notas', 'width' => 'full-width'],
 										],
-                ],
-                'images' => [
-										'noLocale' => [
-											['name' => 'image', 'type' => 'gallery', 'buttonText' => 'Subir', 'label' => '', 'width' => 'minimum-width'],
+								],
+								'images' => [
+										'locale' => [
+												['name' => 'poster', 'type' => 'gallery', 'label' => 'Poster del evento', 'quantity' => 'single', 'width' => 'full-width', 
+													'configuration' => [
+														'thumbnail' => [
+															'widthPx' => '100',
+															'heightPx' => '100'
+														],
+														'xs' => [
+															'widthPx' => '200',
+															'heightPx' => '200'
+														],
+														'sm' => [
+															'widthPx' => '200',
+															'heightPx' => '200'
+														],
+														'md' => [
+															'widthPx' => '450',
+															'heightPx' => '450'
+														],
+														'lg' => [
+															'widthPx' => '450',
+															'heightPx' => '450'
+														]
+													]
+												],
+												['name' => 'gallery', 'type' => 'gallery', 'label' => 'Galería del evento', 'quantity' => 'multiple', 'width' => 'full-width', 
+													'configuration' => [
+														'thumbnail' => [
+															'widthPx' => '100',
+															'heightPx' => '100'
+														],
+														'xs' => [
+															'widthPx' => '200',
+															'heightPx' => '200'
+														],
+														'sm' => [
+															'widthPx' => '200',
+															'heightPx' => '200'
+														],
+														'md' => [
+															'widthPx' => '450',
+															'heightPx' => '450'
+														],
+														'lg' => [
+															'widthPx' => '450',
+															'heightPx' => '450'
+														]
+													]
+												]
 										]
                 ],
-            ]
+								// 'camera' => [
+								// 		'noLocale' => [
+								// 			['name' => 'image', 'type' => 'camera', 'buttonText' => 'Subir', 'label' => '', 'width' => 'minimum-width'],
+								// 		]
+								// ],
+						]
         ];
     }
 }

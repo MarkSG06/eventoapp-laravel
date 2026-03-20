@@ -14,15 +14,19 @@
 					@foreach ($formElements as $formElement)
 						@switch($formElement['type'])
 							@case('textarea')
-
 							<x-form.textarea form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
 								:label="$formElement['label']" :inputAttributes="$formElement['attributes'] ?? ''" />
 							@break
 
 							@case('gallery')
 
-							<x-form.gallery form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"
-								:label="$formElement['label']" :buttonText="$formElement['buttonText']" :inputAttributes="$formElement['attributes'] ?? ''" />
+							<x-form.gallery form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"  :quantity="$formElement['quantity']"
+								:label="$formElement['label']" :configuration="$formElement['configuration'] ?? []" :locale="''" :inputAttributes="$formElement['attributes'] ?? ''" />
+							@break
+
+							@case('camera')
+
+							<x-form.camera form="admin-form" :record="$record" :name="$formElement['name']" :inputAttributes="$formElement['attributes'] ?? ''" />
 							@break
 
 							@case('image')
@@ -94,10 +98,10 @@
 										@break
 
 										@case('gallery')
-											<x-form.gallery form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
-												:label="$formElement['label']" :value="$record?->{$formElement['name']}"
-												:inputAttributes="$formElement['attributes'] ?? ''" />
+											<x-form.gallery form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"  :quantity="$formElement['quantity']"
+												:label="$formElement['label']" :configuration="$formElement['configuration'] ?? []" :locale="''" :inputAttributes="$formElement['attributes'] ?? ''" />
 										@break
+
 										@case('image')
 											<x-form.file form="admin-form" :name="$formElement['name']" :width="$formElement['width']"
 												:label="$formElement['label']" :value="$record?->{$formElement['name']}"

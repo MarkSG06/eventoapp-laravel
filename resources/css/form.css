@@ -145,6 +145,62 @@
   width: 2rem;
 }
 
+.open-gallery {
+	width: 150px;
+	height: 150px;
+}
+
+.fieldGroup img {
+	max-width: 150px;
+	max-height: 150px;
+}
+
+.remove-image-button {
+	position: absolute;
+	margin-left: 8rem;
+	margin-top: -0.6rem;
+	cursor: pointer;
+	background-color: hsl(0, 0%, 100%);
+	color: hsl(0, 0%, 0%);
+	width: 30px;
+	height: 30px;
+	font-size: 0.7rem;
+	border-radius: 50%;
+	border: 1px solid hsl(0, 0%, 0%);
+}
+
+.upload-image-container.single {
+	position: relative;
+}
+
+.upload-image-container.single .open-gallery {
+	width: 150px;
+	height: 150px;
+	position: absolute;
+}
+
+.upload-image-container.single .image-selected-item {
+	display: none;
+	width: 150px;
+	position: absolute;
+	height: 150px;
+}
+
+.upload-image-container.single .image-selected-item.active {
+	display: block;
+}
+
+.upload-image-container.multiple {
+	/* display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	gap: 1rem;
+	max-height: 65dvh;
+	overflow-y: auto; */
+}
+.upload-image-container img {
+	width: 150px;
+	height: 150px;
+}
 
 input[type="checkbox"] {
   width: 20px;
@@ -212,4 +268,8 @@ button[type="button"]{
 
 .destroy-button.hidden {
   display: none;
+}
+
+.square {
+	
 }

@@ -9,3 +9,5 @@ import './notification';
 import './dropdown';
 import './modal-image';
 import './app'
+// import './camera'
+

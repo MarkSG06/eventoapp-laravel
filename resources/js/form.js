@@ -5,19 +5,6 @@ export default (() => {
 
   const formSection = document.querySelector('.crud-form');
   let form = null
-
-  function updateDestroyButton() {
-    const destroyButton = document.querySelector('.destroy-button');
-    const idInput = document.querySelector('input[name="id"]');
-
-    const id = idInput?.value || "";
-
-    if (id && id !== "0") {
-      destroyButton.classList.remove('hidden');
-    } else {
-      destroyButton.classList.add('hidden');
-    }
-  }
   
   store.subscribe(() => {
     const currentState = store.getState()
@@ -25,19 +12,45 @@ export default (() => {
     if (currentState.crud.form !== form) {
       formSection.innerHTML = currentState.crud.form
       form = currentState.crud.form
-
-      updateDestroyButton()
     }
   })
 
   formSection?.addEventListener('click', async (event) => {
-
     if (event.target.closest('.store-button')) {
 
       const storeButton = event.target.closest('.store-button')
       const endpoint = storeButton.dataset.endpoint;
       const form = document.querySelector('.admin-form');
       const formData = new FormData(form);
+
+      if(formSection.querySelector('.upload-image-container')){
+        const images = []
+        const uploadImageContainers = formSection.querySelectorAll('.upload-image-container')
+
+        uploadImageContainers.forEach(uploadImageContainer => {
+
+          const image = {
+            name: uploadImageContainer.dataset.name,
+            languageAlias: uploadImageContainer.dataset.language,
+            imageConfigurations: JSON.parse(uploadImageContainer.dataset.configuration),
+            files: []
+          }
+
+          uploadImageContainer.querySelectorAll('img').forEach(img => {
+            if(img.getAttribute('src')){
+              image.files.push({
+                filename: img.getAttribute('src').split('/').pop(),
+                alt: img.getAttribute('alt'),
+                title: img.getAttribute('title')
+              })
+            }
+          })
+
+          images.push(image)
+        })
+
+        formData.append('images', JSON.stringify(images))
+      }
 
       try{
         const response = await fetch(endpoint, {
@@ -54,9 +67,18 @@ export default (() => {
         }
   
         if (response.status === 200) {  
-          const json = await response.json();
+  
+          const json = await response.json()
+
           store.dispatch(setTable(json.table))
-          store.dispatch(setForm({form: json.form, formElementEndpoint: null}))
+          store.dispatch(setForm(json.form))
+
+          document.dispatchEvent(new CustomEvent('notification', {
+            detail: {
+              message: json.message,
+              type: 'success'
+            }
+          }))
         }
 
       }catch(error){
@@ -89,39 +111,92 @@ export default (() => {
 
     if (event.target.closest('.create-button')) {
 
-      const createButton = event.target.closest('.create-button')
-      const endpoint = createButton.dataset.endpoint;
+      const cleanButton = event.target.closest('.create-button')
+      const endpoint = cleanButton.dataset.endpoint;
 
-      try {
+      try{
         const response = await fetch(endpoint, {
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
           },
           method: 'GET',
         })
-
-        if (response.status === 500 || response.status === 422) {
+  
+        if (response.status === 500) {
           throw response
         }
-
-        if (response.status === 200) {
-          const json = await response.json();
-          store.dispatch(setForm({form: json.form, formElementEndpoint: endpoint}))
+  
+        if (response.status === 200) {  
+          const json = await response.json()
+          store.dispatch(setForm(json.form))
         }
-
-      } catch (error) {
-        console.error(error)
+      }catch(error){
+        document.dispatchEvent(new CustomEvent('notification', {
+          detail: {
+            message: 'La acción no se pudo completar por un fallo en el servidor.',
+            type: 'error'
+          }
+        }))
       }
     }
 
     if (event.target.closest('.destroy-button')) {
-
       const modalDelete = document.querySelector('.modal-destroy');
       modalDelete.classList.add('active');    
-      
     }
 
+		if (event.target.closest('.upload-image-container .delete-button')) {
+			event.preventDefault()
 
+			const uploadImage = event.target.closest('.upload-image-container .delete-button').parentElement
+
+			uploadImage.querySelector('img').src = ''
+			uploadImage.querySelector('img').alt = ''
+			uploadImage.querySelector('img').title = ''
+			uploadImage.classList.add('hidden')
+			uploadImage.classList.remove('active')
+
+			return
+		}
+
+		if (event.target.closest('.upload-image-container')) {
+      event.preventDefault();
+
+			let image = null;
+			if (event.target.closest('.upload-image')) {
+				image = event.target.closest('.upload-image').querySelector('img');
+			}
+
+      document.dispatchEvent(new CustomEvent('openGallery', {
+        detail: {
+          uploadImageContainer: event.target.closest('.upload-image-container'),
+          image: image
+        }
+      }))
+    }
+		
+		if (event.target.closest('.square-button')) {
+			event.preventDefault();
+			const uploadImageContainer = event.target.closest('.upload-image-container')
+			const image = uploadImageContainer.querySelector('img')
+
+			document.dispatchEvent(new CustomEvent('openGallery', {
+				detail: {
+					uploadImageContainer: uploadImageContainer,
+					image
+				}
+			}))
+		}
+		
   });
+	
+	formSection?.addEventListener('input', async (event) => {
+    if (event.target.closest('[type="range')) {
 
+      const inputRange = event.target.closest('[type="range');
+      const rangeValue = inputRange.parentElement.querySelector('.range-value');
+
+      rangeValue.innerText = inputRange.value
+    }
+  });
 })();

@@ -10,6 +10,7 @@
   <title>Admin</title>
 
   @vite(['resources/css/index.css', 'resources/js/admin.js'])
+  <script src="https://unpkg.com/monaco-editor@0.47.0/min/vs/loader.js"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
   </main>
   <x-notification />
   <x-modal-destroy />
-  <section class="modal-image hidden">
+  <section class="modal-image active">
     <x-modal-image />
   </section>
 </body>

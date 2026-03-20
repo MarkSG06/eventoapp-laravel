@@ -1,34 +1,43 @@
-<?php
+@php
+  $filename = $filename ?? null;
+@endphp
 
-$images = $images ?? [];
-
-?>
-
-<div class="container">
-	<div class="headerContainer">
-		<h1>Biblioteca</h1>			
-		<div class="closeModal">
-			<svg class="closeModalImage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z"/></svg>
-		</div>
-	</div>
-	<div class="modal-content">
-		<div class="modal-images-container">
-			<label for="image" class="upload-image">
-				<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><path fill="currentColor" d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h8v2H5v14h14v-7h2v7q0 .825-.587 1.413T19 21zm1-4h12l-3.75-5l-3 4L9 13zm12-7V5.825L16.4 7.4L15 6l4-4l4 4l-1.4 1.4L20 5.825V10z"/></svg>
-			</label>
-			<input data-endpoint="{{ route('images_store') }}" class="upload-image-input" type="file" name="image" id="image" hidden>
-			@foreach ($images as $image)
-				<div class="image-item">
-					<img src="{{ route('images_thumb', $image->filename) }}" alt="{{ $image->alt }}">
-					<button class="delete-button" data-endpoint="{{ route('images_destroy', $image->filename) }}">X</button>
-				</div>
-			@endforeach
-		</div>
-		<div class="modal-image-create">
-			<input type="text" name="alt" placeholder="Alt">
-			<input type="text" name="title" placeholder="Título">
-			<button type="button">Subir</button>
-		</div>
-	</div>
-	
+<div class="modal-image">
+  <div class="modal-image-content">
+    <div class="modal-image-header">
+      <h2>Galería</h2>
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-image-body">
+      <div class="modal-images-container">
+        <div class="modal-image-upload">
+          <label for="image">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9,16V10H5L12,3L19,10H15V16H9M5,20V18H19V20H5Z" /></svg>
+          </label>
+          <input class="modal-image-upload-input" type="file" name="image" data-endpoint="{{ route('images_store') }}" />
+        </div>
+        @foreach($images as $image)
+          <div class="image {{ $image->filename == $filename ? 'selected' : '' }}" data-filename="{{ $image->filename }}">
+            <img src="{{ route('images_thumb', $image->filename) }}" />
+            <button class="delete-button" data-endpoint="{{ route('images_destroy', $image->filename) }}">X</button>
+          </div>
+        @endforeach
+      </div>
+      <div class="modal-image-loader">
+        <div class="modal-image-loader-form">
+          <div class="modal-image-loader-form">
+            <label for="title">Título</label>
+            <input type="text" name="title" />
+          </div>
+          <div class="modal-image-loader-form">
+            <label for="description">Texto alternativo</label>
+            <input type="text" name="alt" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="select-image-button">Elegir imagen</button>
+    </div>
+  </div>
 </div>

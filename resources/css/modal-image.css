@@ -1,4 +1,4 @@
-.modal-image.hidden {
+.modal-image.active {
 	display: none;
 }
 .modal-image {
@@ -112,17 +112,37 @@
 	position: relative;
 }
 
+.image-item img.active {
+	border: 3px solid hsl(120, 98%, 39%);
+}
+
+.image.active {
+	padding: 0.5rem;
+}
+.select-image-button {
+	display: none;
+}
+.select-image-button.active {
+	display: flex;
+	justify-content: center;
+	background-color: hsl(120, 98%, 39%);
+}
+
+.image.selected {
+	border: 3px solid hsl(120, 98%, 39%);
+	padding: 0.5rem;
+}
+.select-image-button:hover {
+	background-color: hsl(120, 100%, 50%);
+}
+.disabled {
+	display: none !important;
+}
 .delete-button {
-	position: absolute;
-	top: 0;
-	left: 0;
-	margin: 0.25rem;
 	background-color: hsl(0, 99%, 30%);
 	color: hsl(0, 0%, 100%);
+	padding: 0.5rem;
 	border: none;
-	border-radius: 50%;
-	width: 24px;
-	height: 24px;
 	cursor: pointer;
 	display: flex;
 	align-items: center;

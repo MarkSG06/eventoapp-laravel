@@ -89,6 +89,7 @@ class TicketController extends Controller
   public function store(TicketRequest $request)
   {            
     try{
+			\Debugbar::info($request->input('images'));
 
       $request->validated();
       $data = $request->all();
