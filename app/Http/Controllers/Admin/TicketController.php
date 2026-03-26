@@ -7,12 +7,13 @@ use App\Http\Controllers\Controller;
 use App\ViewModels\Admin\TicketViewModel as ViewModel;
 use Illuminate\Http\Request;
 use App\Models\MongoDB\Ticket;
+use App\Events\TicketStored;
 use App\Http\Requests\Admin\TicketRequest;
-use App\Services\SitemapService;
+use App\Services\ImageService;
 
 class TicketController extends Controller
 {
-  public function __construct(private Ticket $ticket, private SitemapService $sitemapService)
+  public function __construct(private Ticket $ticket, private ImageService $imageService)
   {
   }
  
@@ -89,26 +90,20 @@ class TicketController extends Controller
   public function store(TicketRequest $request)
   {            
     try{
-			\Debugbar::info($request->input('images'));
 
-      $request->validated();
-      $data = $request->all();
+      $data = $request->validated();
       $data['_id'] = $request->input('id');
 
       $ticket = $this->ticket->updateOrCreate([
         '_id' => $request->input('id')
       ], $data);
 
-      \Debugbar::info($ticket->id);	
-
-			foreach ($ticket->locale as $language => $fields) {
-        $slugs = [
-          'title' => $fields['title']
-        ];
-				\Debugbar::info($fields);
-
-        $this->sitemapService->updateOrCreateSlug('tickets', $ticket->_id, $language, 'ticket', $slugs);
-      }
+			TicketStored::dispatch(
+        $ticket,
+        $request->filled('images')
+          ? $request->input('images')
+          : []
+      );
 
       $tickets = $this->ticket
         ->orderBy('created_at', 'desc')

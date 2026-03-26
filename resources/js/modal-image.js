@@ -18,7 +18,6 @@ document.addEventListener('openGallery', (event) => {
 
 	imageGalleryContainer.classList.remove('active')
 })
-
 imageGalleryContainer?.addEventListener('click', async (event) => {
 
   if (event.target.closest('.closeModalImage')) {
@@ -30,8 +29,8 @@ imageGalleryContainer?.addEventListener('click', async (event) => {
 		uploadImageContainer = null
   }
 
-   if (event.target.closest('.delete-button')) {
-    const endpoint = event.target.closest('.delete-button').dataset.endpoint
+   if (event.target.closest('.delete-button-modal')) {
+    const endpoint = event.target.closest('.delete-button-modal').dataset.endpoint
 
     const result = await fetch(`${endpoint}`, {
       method: 'DELETE',
@@ -49,7 +48,6 @@ imageGalleryContainer?.addEventListener('click', async (event) => {
     imageGalleryContainer.querySelector('.image.selected')?.classList.remove('selected')
     event.target.closest('.image').classList.add('selected')
     imageGalleryContainer.querySelector('.select-image-button').classList.add('active')			
-		imageGalleryContainer.querySelector('.delete-button').classList.add('selected')
 	}
 
   if (event.target.closest('.select-image-button')) {

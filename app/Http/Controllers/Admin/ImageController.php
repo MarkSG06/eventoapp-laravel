@@ -26,10 +26,11 @@ class ImageController extends Controller
       ]);
   
       return response()->json([
-        'imageGallery' => view('components.modal-image', ['filename' => $filename])->render(),
+        'imageGallery' => view('components.image-gallery', ['filename' => $filename])->render(),
       ], 200);
     }
     catch(\Exception $e){
+      \Debugbar::info($e->getMessage());
       return response()->json([
         'message' => \Lang::get('admin/notification.error'),
       ], 500);
@@ -64,7 +65,7 @@ class ImageController extends Controller
       $this->image->where('filename', $filename)->delete();
 
       return response()->json([
-        'imageGallery' => view('components.modal-image')->render(),
+        'imageGallery' => view('components.image-gallery')->render(),
       ], 200);
     }
     catch(\Exception $e){

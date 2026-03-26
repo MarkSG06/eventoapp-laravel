@@ -135,20 +135,21 @@
 .select-image-button:hover {
 	background-color: hsl(120, 100%, 50%);
 }
-.disabled {
-	display: none !important;
-}
-.delete-button {
+.delete-button-modal {
+	position: absolute;
+	top: 0;
+	right: 0;
 	background-color: hsl(0, 99%, 30%);
 	color: hsl(0, 0%, 100%);
-	padding: 0.5rem;
 	border: none;
 	cursor: pointer;
+	border-radius: 2rem;
+	padding: 0rem 0.5rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.delete-button:hover {
+.delete-button-modal:hover {
 	background-color: hsl(0, 99%, 50%);
 }

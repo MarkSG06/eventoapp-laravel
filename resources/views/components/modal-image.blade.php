@@ -27,7 +27,7 @@ $images = $images ?? [];
 						title="{{ $image->title }}"
 					>
 
-					<button class="delete-button disabled" data-endpoint="{{ route('images_destroy', $image->filename) }}">
+					<button class="delete-button-modal" data-endpoint="{{ route('images_destroy', $image->filename) }}">
 						X
 					</button>
 				</div>

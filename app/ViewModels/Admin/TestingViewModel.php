@@ -58,8 +58,31 @@ final class TestingViewModel
                     ],
                 ],
                 'image' => [
-										'noLocale' => [
-												['name' => 'image', 'type' => 'gallery', 'buttonText' => 'Subir', 'label' => '', 'width' => 'one-third-width'],
+										'locale' => [
+												['name' => 'poster', 'type' => 'gallery', 'label' => 'Poster del evento', 'quantity' => 'single', 'width' => 'full-width', 
+													'configuration' => [
+														'thumbnail' => [
+															'widthPx' => '100',
+															'heightPx' => '100'
+														],
+														'xs' => [
+															'widthPx' => '200',
+															'heightPx' => '200'
+														],
+														'sm' => [
+															'widthPx' => '200',
+															'heightPx' => '200'
+														],
+														'md' => [
+															'widthPx' => '450',
+															'heightPx' => '450'
+														],
+														'lg' => [
+															'widthPx' => '450',
+															'heightPx' => '450'
+														]
+													]
+												],
 										]
                 ],
           ]

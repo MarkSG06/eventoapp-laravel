@@ -1,6 +1,9 @@
 @props([
 	'tickets'
 ])
+@php
+	$locale = app()->getLocale();
+@endphp
 <style>
 	/* TITULO */
 	h1 {
@@ -97,16 +100,42 @@
 			}
 
 	}
+	img {
+		width: 300px;
+		height: 300px;
+		object-fit: cover;
+	}
 </style>
 <h1>Tickets:</h1>
 <section class="tickets">
 	@foreach ($tickets as $ticket)
 		<div class="ticket">
+			<img
+				data-original-filename="{{ $ticket->images[$locale]['lg']['poster'][0]['originalFilename'] }}"
+				srcset="
+					{{ route('image', ['entity' => 'tickets', 'entityId' => $ticket->id, 'filename' => $ticket->images[$locale]['xs']['poster'][0]['filename']]) }} 480w,
+					{{ route('image', ['entity' => 'tickets', 'entityId' => $ticket->id, 'filename' => $ticket->images[$locale]['sm']['poster'][0]['filename']]) }} 768w,
+					{{ route('image', ['entity' => 'tickets', 'entityId' => $ticket->id, 'filename' => $ticket->images[$locale]['md']['poster'][0]['filename']]) }} 1024w,
+					{{ route('image', ['entity' => 'tickets', 'entityId' => $ticket->id, 'filename' => $ticket->images[$locale]['lg']['poster'][0]['filename']]) }} 1440w
+				"
+				sizes="
+					(max-width: 480px) 480px,
+					(max-width: 768px) 768px,
+					(max-width: 1024px) 1024px,
+					1440px
+				"
+				src="{{ route('image', ['entity' => 'tickets', 'entityId' => $ticket->id, 'filename' => $ticket->images[$locale]['lg']['poster'][0]['filename']]) }}"
+				alt="{{ $ticket->images[$locale]['lg']['poster'][0]['alt'] }}"
+				title="{{ $ticket->images[$locale]['lg']['poster'][0]['title'] }}"
+			>
+			<h1>{{ (isset($ticket->locale[$locale]['title'])) ? $ticket->locale[$locale]['title'] : '' }}</h1>
 			<h2>{{ $ticket->fiscal_name }}</h2>
 			<p>Fecha y hora: {{ $ticket->datetime }}</p>
 			<p>Número de ticket: {{ $ticket->ticket_number }}</p>
-			<p>Notas: {{ $ticket->locale[app()->getLocale()]['notes'] }}</p>
-			<a href="{{ route(app()->getLocale() . '.ticket', ['title' => $ticket->locale[app()->getLocale()]['title']]) }}">{{ __('front/tickets.view') }}</a>
+			<p>Notas: {{ (isset($ticket->locale[app()->getLocale()]['notes'])) ? $ticket->locale[app()->getLocale()]['notes'] : '' }}</p>
+			@if(!empty($ticket->locale[app()->getLocale()]['title']))
+				<a href="{{ route(app()->getLocale() . '.ticket', ['title' => $ticket->locale[app()->getLocale()]['title']]) }}">{{ __('front/tickets.view') }}</a>
+			@endif
 		</div>
 	@endforeach
 </section>

@@ -33,6 +33,10 @@ Route::prefix('customer')->name('cliente.')->group(function () {
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
 
+  Route::post('/images', 'App\Http\Controllers\Admin\ImageController@store')->name('images_store');
+  Route::get('/images/thumb/{filename}', 'App\Http\Controllers\Admin\ImageController@showThumb')->name('images_thumb');
+  Route::delete('/images/{filename}', 'App\Http\Controllers\Admin\ImageController@destroy')->name('images_destroy');	
+
   Route::get('/dashboard', function () {
     return view('admin.dashboard');
   })->middleware(['auth', 'verified'])->name('dashboard');
@@ -47,6 +51,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
       'show' => 'users_edit',
       'store' => 'users_store',
       'destroy' => 'users_destroy',
+    ]
+  ]);
+
+	Route::resource('faqs', 'App\Http\Controllers\Admin\FaqController', [
+    'parameters' => [
+      'faqs' => 'faq', 
+    ],
+    'names' => [
+      'index' => 'faqs',
+      'create' => 'faqs_create',
+      'show' => 'faqs_edit',
+      'store' => 'faqs_store',
+      'destroy' => 'faqs_destroy',
     ]
   ]);
 
@@ -101,15 +118,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
       'destroy' => 'languages_destroy',
     ]
   ]);
-
-  Route::post('/images', 'App\Http\Controllers\Admin\ImageController@store')->name('images_store');
-  Route::get('/images/thumb/{filename}', 'App\Http\Controllers\Admin\ImageController@showThumb')->name('images_thumb');
-  Route::delete('/images/{filename}', 'App\Http\Controllers\Admin\ImageController@destroy')->name('images_destroy');	
   
   Route::get('/camera', function () {
     return view('camera');
   })->name('camera');
 });
+
+Route::get('/images/{entity}/{entityId}/{filename}', 'App\Http\Controllers\Front\ImageController@showImage')->name('image');
+Route::post('/change-language', 'App\Http\Controllers\Front\LanguageController@changeLanguage')->name('change_language');
+Route::get('/', function () {})->middleware('setlocale');
 // -------------------------------
 // CUSTOMER
 // -------------------------------

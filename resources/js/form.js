@@ -13,6 +13,15 @@ export default (() => {
       formSection.innerHTML = currentState.crud.form
       form = currentState.crud.form
     }
+
+		const formMain = formSection.querySelector('form')
+    const toolbarSvg = formSection.querySelector('.toolbarSVGs')
+    const destroyButton = toolbarSvg?.querySelector('.destroy-button')
+    const idInput = formMain?.querySelector('input[name="id"]')
+
+    if (idInput && destroyButton && idInput.value) {
+      destroyButton.classList.remove('hidden')
+    }
   })
 
   formSection?.addEventListener('click', async (event) => {
@@ -28,7 +37,6 @@ export default (() => {
         const uploadImageContainers = formSection.querySelectorAll('.upload-image-container')
 
         uploadImageContainers.forEach(uploadImageContainer => {
-
           const image = {
             name: uploadImageContainer.dataset.name,
             languageAlias: uploadImageContainer.dataset.language,
@@ -46,10 +54,14 @@ export default (() => {
             }
           })
 
-          images.push(image)
+          if(image.files.length > 0){
+            images.push(image)
+          }
         })
 
-        formData.append('images', JSON.stringify(images))
+				if(images.length > 0){
+					formData.append('images', JSON.stringify(images))
+				}
       }
 
       try{
@@ -61,7 +73,7 @@ export default (() => {
           method: 'POST',
           body: formData
         })
-  
+
         if (response.status === 500 || response.status === 422) {
           throw response
         }

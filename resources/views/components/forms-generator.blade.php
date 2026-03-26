@@ -20,8 +20,16 @@
 
 							@case('gallery')
 
-							<x-form.gallery form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"  :quantity="$formElement['quantity']"
-								:label="$formElement['label']" :configuration="$formElement['configuration'] ?? []" :locale="''" :inputAttributes="$formElement['attributes'] ?? ''" />
+							<x-form.gallery 
+								form="admin-form"
+								:name="$formElement['name']"
+								:width="$formElement['width']" 
+								:label="$formElement['label']" 
+								:quantity="$formElement['quantity']"
+								:configuration="$formElement['configuration']"
+								:value="$record?->adminImages?->{$formElement['name']}"
+								:inputAttributes="$formElement['attributes'] ?? ''"
+							/>
 							@break
 
 							@case('camera')
@@ -98,8 +106,17 @@
 										@break
 
 										@case('gallery')
-											<x-form.gallery form="admin-form" :record="$record" :name="$formElement['name']" :width="$formElement['width']"  :quantity="$formElement['quantity']"
-												:label="$formElement['label']" :configuration="$formElement['configuration'] ?? []" :locale="''" :inputAttributes="$formElement['attributes'] ?? ''" />
+											<x-form.gallery
+													form="admin-form"
+													:name="$formElement['name']"
+													:locale="$language['label']"
+													:width="$formElement['width']" 
+													:label="$formElement['label']" 
+													:quantity="$formElement['quantity']"
+													:configuration="$formElement['configuration']"
+													:value="$record->adminImages[$language['label']][$formElement['name']] ?? null"
+													:inputAttributes="$formElement['attributes'] ?? ''"
+											/>
 										@break
 
 										@case('image')

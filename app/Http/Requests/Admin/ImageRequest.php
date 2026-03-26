@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 
 class ImageRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -21,6 +22,10 @@ class ImageRequest extends FormRequest
     {
       return [
         // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:8192',
+        // 'images' => 'nullable|array',
+        // 'images.*.title' => 'nullable|string',
+        // 'images.*.alt' => 'nullable|string',
+        // 'images.*.filename' => 'nullable|string',
       ];
     }
 

@@ -14,7 +14,7 @@ export default (() => {
     if (event.target.closest('.destroy-confirm')) {
       const currentState = store.getState()
       
-      const endpoint = currentState.crud.formElementEndpoint
+      const endpoint = currentState.crud.deleteModal.endpoint
 
       try{
         const response = await fetch(endpoint, {
@@ -33,7 +33,7 @@ export default (() => {
           const json = await response.json();
           modalSection.classList.remove('active');
           store.dispatch(setTable(json.table))
-          store.dispatch(setForm({form: json.form, formElementEndpoint: null}))
+          store.dispatch(setForm(json.form))
         }
       }catch(error){
 

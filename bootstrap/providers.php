@@ -2,5 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\ViewComposerServiceProvider::class
+    App\Providers\EventServiceProvider::class,
+    App\Providers\HorizonServiceProvider::class,
+    App\Providers\ViewComposerServiceProvider::class,
 ];

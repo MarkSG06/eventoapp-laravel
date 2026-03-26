@@ -27,6 +27,7 @@ final class UserViewModel
       return [
           'tabs' => [
               ['name' => 'general', 'label' => 'General'],
+              ['name' => 'avatar', 'label' => 'Avatar'],
           ],
           'formButtons' => [
               'destroyButton' => 'users_destroy',
@@ -40,14 +41,34 @@ final class UserViewModel
                   ['name' => 'email', 'type' => 'email', 'label' => 'Email', 'width' => 'half-width'],
                   ['name' => 'password', 'type' => 'password', 'label' => 'Contraseña', 'width' => 'half-width'],
                   ['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirmar contraseña', 'width' => 'half-width'],
-                  ['name' => 'role', 'type' => 'select', 'label' => 'Rol', 'width' => 'half-width', 'options' => [
-                    ['value' => 'admin', 'label' => 'Admin'],
-                    ['value' => 'user', 'label' => 'User'],
-                  ]],
                 ],
+              ],
+              'avatar' => [
                 'locale' => [
-									['name' => 'title', 'type' => 'text', 'label' => 'Título', 'width' => 'full-width'],
-									['name' => 'description', 'type' => 'textarea', 'label' => 'Descripción', 'width' => 'full-width'],
+                  ['name' => 'poster', 'type' => 'gallery', 'label' => 'Poster del evento', 'quantity' => 'single', 'width' => 'full-width', 
+										'configuration' => [
+											'thumbnail' => [
+												'widthPx' => '100',
+												'heightPx' => '100'
+											],
+											'xs' => [
+												'widthPx' => '200',
+												'heightPx' => '200'
+											],
+											'sm' => [
+												'widthPx' => '200',
+												'heightPx' => '200'
+											],
+											'md' => [
+												'widthPx' => '450',
+												'heightPx' => '450'
+											],
+											'lg' => [
+												'widthPx' => '450',
+												'heightPx' => '450'
+											]
+										]
+									],
                 ],
               ],
           ]

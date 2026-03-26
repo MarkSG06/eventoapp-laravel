@@ -190,12 +190,12 @@
 	display: block;
 }
 
-.upload-image-container.multiple {
-	/* display: grid;
+.upload-image-container[data-quantity="multiple"] {
+	display: grid;
 	grid-template-columns: repeat(6, 1fr);
 	gap: 1rem;
 	max-height: 65dvh;
-	overflow-y: auto; */
+	overflow-y: auto;
 }
 .upload-image-container img {
 	width: 150px;
@@ -268,8 +268,4 @@ button[type="button"]{
 
 .destroy-button.hidden {
   display: none;
-}
-
-.square {
-	
 }

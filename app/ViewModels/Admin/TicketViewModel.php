@@ -29,7 +29,6 @@ final class TicketViewModel
             'tabs' => [
                 ['name' => 'general', 'label' => 'General'],
                 ['name' => 'images', 'label' => 'Imágenes'],
-                // ['name' => 'camera', 'label' => 'Cámara']
             ],
             'formButtons' => [
                 'destroyButton' => 'tickets_destroy',
@@ -104,12 +103,7 @@ final class TicketViewModel
 													]
 												]
 										]
-                ],
-								// 'camera' => [
-								// 		'noLocale' => [
-								// 			['name' => 'image', 'type' => 'camera', 'buttonText' => 'Subir', 'label' => '', 'width' => 'minimum-width'],
-								// 		]
-								// ],
+                ]
 						]
         ];
     }

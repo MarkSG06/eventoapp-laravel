@@ -1,5 +1,5 @@
 import store from './redux/store';
-import { setTable, setForm } from './redux/crud-slice';
+import { setTable, setForm, setDeleteModal } from './redux/crud-slice';
 
 export default (() => {
 
@@ -20,12 +20,12 @@ export default (() => {
     if (event.target.closest('.table__body')) {
       const editButton = event.target.closest('.table-box__data');
       const endpoint = editButton.dataset.endpoint;
-
       try {
           const response = await fetch(endpoint);
           const json = await response.json();
-          store.dispatch(setForm({form: json.form, formElementEndpoint: endpoint}));
-      } catch (error) { 
+					store.dispatch(setForm(json.form));
+					store.dispatch(setDeleteModal({ endpoint: endpoint }));
+      } catch (error) {
           console.log('Error en fetch:', error);
       }
     }

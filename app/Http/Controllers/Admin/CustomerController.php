@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MySQL\Customer;
 use App\ViewModels\Admin\CustomerViewModel as ViewModel;
 use App\Http\Requests\Admin\CustomerRequest;
+use App\Http\Controllers\Admin\MailController;
 
 class CustomerController extends Controller
 {
@@ -71,7 +72,7 @@ class CustomerController extends Controller
     try {
       if (request()->ajax()) {
         return response()->json([
-          'form' => view('components.forms', ['formStructure' => $this->customer->formStructure(), 'record' => $this->customer])->render(),
+          'form' => view('components.forms', ['formStructure' => ViewModel::formStructure(), 'record' => $this->customer])->render(),
         ], 200);
       }
     } catch (\Exception $e) {
@@ -97,6 +98,11 @@ class CustomerController extends Controller
         'id' => $request->input('id')
       ], $data);
 
+			MailController::sendWelcomeMail(
+				$request->input('email'),
+				$request->input('name')
+			);
+
       $customers = $this->customer
       ->orderBy('created_at', 'desc')
       ->paginate(10);
@@ -108,8 +114,8 @@ class CustomerController extends Controller
       }
       
       return response()->json([
-        'table' => view('components.tables', ['tableStructure' => $this->customer->tableStructure(), 'records' => $customers])->render(),
-        'form' => view('components.forms', ['formStructure' => $this->customer->formStructure(), 'record' => $this->customer])->render(),
+        'table' => view('components.tables', ['tableStructure' => ViewModel::tableStructure(), 'records' => $customers])->render(),
+        'form' => view('components.forms', ['formStructure' => ViewModel::formStructure(), 'record' => $this->customer])->render(),
         'message' => $message,
       ], 200);
     }
@@ -124,7 +130,7 @@ class CustomerController extends Controller
   {
     try{
       return response()->json([
-        'form' => view('components.forms', ['formStructure' => $this->customer->formStructure(), 'record' => $customer])->render(),
+        'form' => view('components.forms', ['formStructure' => ViewModel::formStructure(), 'record' => $customer])->render(),
       ], 200);
     }
     catch(\Exception $e){
@@ -146,8 +152,8 @@ class CustomerController extends Controller
       $message = \Lang::get('admin/notification.destroy');
       
       return response()->json([
-        'table' => view('components.tables', ['tableStructure' => $this->customer->tableStructure(), 'records' => $customers])->render(),
-        'form' => view('components.forms', ['formStructure' => $this->customer->formStructure(), 'record' => $this->customer])->render(),
+        'table' => view('components.tables', ['tableStructure' => ViewModel::tableStructure(), 'records' => $customers])->render(),
+        'form' => view('components.forms', ['formStructure' => ViewModel::formStructure(), 'record' => $this->customer])->render(),
         'message' => $message,
       ], 200);
     }

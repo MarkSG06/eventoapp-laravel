@@ -8,21 +8,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Image extends Model
 {
-    use HasFactory, SoftDeletes;
-    
-    protected $guarded = [];
+  use HasFactory, SoftDeletes;
 
-    protected $table = 'images';
-    protected $connection = 'mongodb';
-    public $timestamps = true;
+  protected $connection = 'mongodb';
+  protected $table = 'images';
+  public $timestamps = true;
 
-    public function getRouteKeyName()
-    {
-        return '_id';
-    }
+  protected $guarded = [];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
+  protected $casts = [
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+  ];
+
+  public function getRouteKeyName()
+  {
+    return '_id';
+  }
 }

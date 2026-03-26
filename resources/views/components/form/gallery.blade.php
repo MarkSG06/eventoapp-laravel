@@ -6,14 +6,11 @@
   'quantity' => '',
   'configuration' => [],
   'width' => '',
-  'value' => []
+  'value'
 ])
 <div class="fieldGroup {{ $width }}" style="margin-bottom: 1rem;">
     <label for="{{ $form }}-{{ $name }}">{{ $label }}</label>
-
     <div class="upload-image-container" data-name="{{ $name }}" data-language="{{ $locale }}" data-quantity="{{ $quantity }}" data-configuration="{{ json_encode($configuration) }}">
-			<button class="square-button">
-			</button>
 			@isset($value['files'])
 				@foreach($value['files'] as $file)
 					<div class="upload-image {{ $quantity }}">

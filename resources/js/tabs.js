@@ -1,6 +1,6 @@
 export default (() => {
 
-  const main = document.querySelector('main');
+  const main = document.querySelector('.crud-form');
 
   main?.addEventListener('click', (event) => {
 
@@ -14,7 +14,7 @@ export default (() => {
     tabClicked.classList.add('active-tab');
     tabActive?.classList.remove('active-tab');
 
-    const container = tabClicked.closest('.crud-form');
+	  const container = tabClicked.closest('.locale-inputs') ?? tabClicked.closest('.crud-form');
 
     const contentActive = container.querySelector(
       `.tab-content.active[data-tab="${tabActive.dataset.tab}"]`
@@ -23,7 +23,7 @@ export default (() => {
     const contentClicked = container.querySelector(
       `.tab-content[data-tab="${tabClicked.dataset.tab}"]`
     );
-
+    
     contentActive?.classList.remove('active');
     contentClicked?.classList.add('active');
 

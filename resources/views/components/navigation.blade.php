@@ -5,6 +5,8 @@ $navLinks = [
 ['route' => 'customers', 'label' => 'Clientes'],
 ['route' => 'tickets', 'label' => 'Tickets'],
 ['route' => 'languages', 'label' => 'Idiomas'],
+['route' => 'testings', 'label' => 'Pruebas'],
+// ['route' => 'horizon', 'label' => 'Horizon'],
 ];
 @endphp
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">

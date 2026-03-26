@@ -1,0 +1,97 @@
+.notification {
+  position: fixed;
+  bottom: 2rem;
+  right: 25rem;
+  width: 300px;
+  min-height: 60px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  transform: translateX(1000%);
+  transition: all 0.4s ease;
+  z-index: 9999;
+}
+
+/* Mostrar */
+.notification.success {
+  transform: translateX(120%);
+}
+
+/* Tipo (barra lateral) */
+.notification-type {
+  width: 6px;
+  height: 100%;
+}
+
+/* Mensaje */
+.notification-message {
+  padding: 12px 16px;
+  flex: 1;
+}
+
+.notification-message p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Barra de progreso */
+.notification-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.notification-progress::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: currentColor;
+  animation: progress 5s linear forwards;
+}
+
+/* Animación progreso */
+@keyframes progress {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* Tipos de notificación */
+.notification.success {
+  color: #2ecc71;
+}
+.notification.success .notification-type {
+  background: #2ecc71;
+}
+
+.notification.error {
+  color: #e74c3c;
+}
+.notification.error .notification-type {
+  background: #e74c3c;
+}
+
+.notification.warning {
+  color: #f39c12;
+}
+.notification.warning .notification-type {
+  background: #f39c12;
+}
+
+.notification.info {
+  color: #3498db;
+}
+.notification.info .notification-type {
+  background: #3498db;
+}

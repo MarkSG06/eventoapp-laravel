@@ -7,6 +7,15 @@ use Illuminate\Validation\Rule;
 
 class TicketRequest extends FormRequest
 {
+
+		protected function prepareForValidation()
+    {
+      if ($this->has('images') && is_string($this->images)) {
+        $this->merge([
+          'images' => json_decode($this->images, true),
+        ]);
+      }
+    }
     /**
      * Determine if the user is authorized to make this request.
      *
